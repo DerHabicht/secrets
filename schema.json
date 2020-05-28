@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft/2019-09/schema#",
+  "$id": "https://raw.githubusercontent.com/DerHabicht/secrets/master/schema.json",
+  "definitions": {
+    "bank": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "rtn": { "type": "number" },
+        "account": { "type": "number" }
+      },
+      "required": [ "name", "rtn", "account" ]
+    },
+    "credential": {
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "username": { "type": "string" },
+        "type": { "type": "string" },
+        "secret": { "type": "string" }
+      },
+      "required": [ "service", "type", "secret" ]
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "role": { "type": "string" }
+      },
+      "required": [ "name", "type" ]
+    },
+    "otp": {
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "username": { "type": "string" },
+        "secret": { "type": "string" },
+        "devices": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": [ "service", "secret", "devices" ]
+    },
+    "passphrase": {
+      "type": "object",
+      "properties": {
+        "passphrase": { "type": "string" },
+        "start": { },
+        "end": { }
+      },
+      "required": [ "passphrase", "start" ]
+    },
+    "passphrase_history": {
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "current": { "$ref": "#/definitions/passphrase" },
+        "notes": { "type": "string" },
+        "deprecated": { "type": "array", "items": { "$ref": "#/definitions/passphrase" } }
+      }
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "issuer": { "type": "string" },
+        "record_number": { "type": "string" },
+        "issued": { },
+        "expires": { },
+        "secret": { "type": "string" }
+      },
+      "required": [ "type", "issuer", "record_number", "issued" ]
+    },
+    "token_list": {
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "username": { "type": "string" },
+        "tokens": { "type": "array", "items": { "$ref": "#/definitions/credential" } }
+      },
+      "required": [ "service", "tokens" ]
+    },
+    "u2f": {
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "username": { "type": "string" },
+        "devices": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": [ "service", "username", "devices" ]
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "date": { },
+    "banks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/bank" }
+    },
+    "credentials": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/credential" }
+    },
+    "devices": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/device" }
+    },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/record" }
+    },
+    "gpg": {
+      "type": "object",
+      "properties": {
+        "current": { "type": "array", "items": { "type": "string" }},
+        "deprecated": { "type": "array", "items": { "type": "string" }}
+      }
+    },
+    "otp": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/otp" }
+    },
+    "passphrases": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/passphrase_history" }
+    },
+    "recovery": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/credential" }
+    },
+    "ssh": {
+      "type": "object",
+      "properties": {
+        "public": { "type": "array", "items": { "type":  "string" } },
+        "private": { "type": "array", "items": { "type":  "string" } }
+      }
+    },
+    "tokens": {
+      "type": "array",
+      "items":{ "$ref": "#/definitions/token_list" }
+    },
+    "u2f": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/u2f" }
+    }
+  }
+}
